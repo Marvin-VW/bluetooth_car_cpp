@@ -1,5 +1,7 @@
 # Bluetooth Car C++ Code
 
+<img src="car_wiring.png" width="500"/>
+
 This project allows you to control a car connected to an ESP32 board via Bluetooth. The devices include a steering servo, LED underglow, motor, and distance sensors. The system uses Bluetooth to receive commands and send sensor data at regular intervals.
 
 ## Hardware Requirements
