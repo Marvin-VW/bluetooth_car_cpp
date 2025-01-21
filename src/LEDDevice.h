@@ -26,9 +26,26 @@ class LEDDevice : public Device {
         digitalWrite(pin, LOW);
     }
 
-    void action() override {
-        digitalWrite(pin, state ? HIGH : LOW); // Set based on current state
+    void action() override { //toggle
+        digitalWrite(pin, state ? HIGH : LOW);
     }
+
+    void blinkLed(int duration) {
+        digitalWrite(pin, HIGH);
+        delay(duration);
+        digitalWrite(pin, LOW);
+        delay(duration);
+    }
+
+    void fadeLed(int startBrightness, int endBrightness, int duration) {
+    int steps = 100;
+    int delayTime = duration / steps;
+    for (int i = 0; i <= steps; i++) {
+        int brightness = map(i, 0, steps, startBrightness, endBrightness);
+        analogWrite(pin, brightness);
+        delay(delayTime);
+    }
+}
 };
 
 #endif

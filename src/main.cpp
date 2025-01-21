@@ -62,6 +62,13 @@ void loop() {
             Serial.println("Turning off");
             Underglow.turnOff();
         }
+        else if (msg.startsWith("Left Joystick:")) {
+            msg.remove(0, 15);
+        }
+        else if (msg.startsWith("Right Joystick:")) {
+            msg.remove(0, 16);
+        }
+
     }
 
     // Timed Sending
@@ -72,9 +79,9 @@ void loop() {
         SerialBT.print("hello");
         //Serial.println("Message sent: hello");
 
-        // long distance_left = Sensor_Left.measureDistance();
-        // long distance_right = Sensor_Right.measureDistance();
-        // Serial.println("Distances: Left = " + String(distance_left) + ", Right = " + String(distance_right));
+        long distance_left = Sensor_Left.measureDistance();
+        long distance_right = Sensor_Right.measureDistance();
+        Serial.println("Distances: Left = " + String(distance_left) + ", Right = " + String(distance_right));
     }
 
     delay(20);
