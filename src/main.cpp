@@ -1,16 +1,22 @@
 #include <Arduino.h>
 #include <BluetoothSerial.h>
+#include <Wire.h>
 
 #include "ServoDevice.h"
 #include "LEDDevice.h"
 #include "MotorDevice.h"
 #include "HCSR04Device.h"
+#include "INA3221.h"
+
+#define INA3221_ADDRESS 0x40 // Default I2C address
 
 ServoDevice Servo(13);
 LEDDevice Underglow(12);
 MotorDevice Motor(27, 26, 25);
 HCSR04Device Sensor_Left(17, 16);
 HCSR04Device Sensor_Right(19, 18);
+
+INA3221 Voltage_Sensor(INA3221_ADDRESS);
 
 BluetoothSerial SerialBT;
 
@@ -25,6 +31,8 @@ void setup() {
     Motor.setup();
     Sensor_Left.setup();
     Sensor_Right.setup();
+    Voltage_Sensor.begin(2,15);
+
 
     SerialBT.begin("Nissan"); //Bluetooth device name
     Serial.println("The device started, now you can pair it with bluetooth!");
@@ -75,13 +83,16 @@ void loop() {
     if (currentMillis - previousMillis >= sendInterval) {
         previousMillis = currentMillis;
         
-        // Example of sending a message every second
-        SerialBT.print("hello");
-        //Serial.println("Message sent: hello");
-
         long distance_left = Sensor_Left.measureDistance();
         long distance_right = Sensor_Right.measureDistance();
-        Serial.println("Distances: Left = " + String(distance_left) + ", Right = " + String(distance_right));
+        float busVoltage = Voltage_Sensor.getBusVoltage();
+        float shuntVoltage = Voltage_Sensor.getShuntVoltage();
+        float current = Voltage_Sensor.getCurrent(0.1); // 100mΩ (0.1Ω) shunt resistor
+
+
+        SerialBT.print(String(distance_left) + "," + String(distance_right) + "," + "100" 
+            + "," + String(busVoltage) + "," + String(shuntVoltage * 1000) + "," + String(current));
+
     }
 
     delay(20);
