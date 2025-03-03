@@ -25,7 +25,7 @@ class HCSR04Device : public Device {
 
     long measureDistance() {
         // Calculate speed of sound based on temperature
-        Serial.println(temperature);
+        //Serial.println(temperature);
         float speedOfSound = 331.3 + (0.606 * temperature);
 
         // Trigger pulse

@@ -24,7 +24,7 @@ class MotorDevice : public Device {
     }
 
     void setSpeed(int s) {
-        speed = constrain(abs(s), 0, 255); // Limit speed to valid range (0-255)
+        speed = map(abs(s), 0, 100, 0, 255); // Limit speed to valid range (0-255)
 
         if (s > 0) {
             // Set direction to forward
